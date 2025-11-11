@@ -239,6 +239,41 @@
   }
 }
 
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Page Scale In Animation */
+@keyframes pageScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Fade In Class */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Page Scale In Class */
+.page-scale-in {
+  animation: pageScaleIn 0.5s ease-out forwards;
+}
+
 /* Usage Examples (Optional CSS classes) */
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out;

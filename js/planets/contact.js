@@ -22,9 +22,15 @@ class ContactPlanet {
 
     // Setup form submission handler
     setupFormHandlers() {
-        this.form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleFormSubmit();
+        this.form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Always prevent default to handle via AJAX
+            
+            if (!this.validateForm()) {
+                return; // Validation failed, don't submit
+            }
+            
+            // Submit via AJAX to FormSubmit
+            await this.submitToFormSubmit();
         });
     }
 
@@ -89,24 +95,44 @@ class ContactPlanet {
         return isValid;
     }
 
-    // Handle form submission with validation
-    async handleFormSubmit() {
-        if (!this.validateForm()) {
-            return;
-        }
-
+    // Submit form to FormSubmit via AJAX
+    // FormSubmit is a free service that sends form submissions via email
+    // Note: On first use, FormSubmit will send a confirmation email to easonjenichia@gmail.com
+    // You need to click the confirmation link to activate the form
+    async submitToFormSubmit() {
         this.setLoadingState(true);
+        this.clearAllErrors();
 
         try {
-            // Simulate API call delay
-            await this.simulateSubmission();
+            // Get form data
+            const formData = new FormData(this.form);
             
-            this.showSuccessMessage();
-            this.form.reset();
-            this.clearAllErrors();
-            
+            // Submit to FormSubmit using AJAX endpoint
+            // This sends the form data to FormSubmit, which then emails it to easonjenichia@gmail.com
+            const response = await fetch('https://formsubmit.co/ajax/easonjenichia@gmail.com', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            // FormSubmit returns { success: true } on success
+            if (response.ok && (data.success === true || response.status === 200)) {
+                // Success! Email has been sent
+                this.showSuccessMessage();
+                this.form.reset();
+            } else {
+                // Error from FormSubmit
+                const errorMsg = data.message || 'Failed to send message';
+                throw new Error(errorMsg);
+            }
         } catch (error) {
-            this.showErrorMessage();
+            console.error('Form submission error:', error);
+            // Show user-friendly error message
+            this.showErrorMessage('Failed to send message. Please try again or email me directly at easonjenichia@gmail.com');
         } finally {
             this.setLoadingState(false);
         }
@@ -209,67 +235,80 @@ class ContactPlanet {
         }
     }
 
-    // Simulate form submission
-    async simulateSubmission() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // Simulate 90% success rate for demo
-                if (Math.random() > 0.1) {
-                    resolve();
-                } else {
-                    reject(new Error('Network error'));
-                }
-            }, 1500);
-        });
-    }
 
     // Show success message
     showSuccessMessage() {
+        // Remove any existing messages
+        const existingMessages = this.form.querySelectorAll('.success-message, .error-message');
+        existingMessages.forEach(msg => msg.remove());
+        
         const successMessage = document.createElement('div');
         successMessage.className = 'success-message fade-in';
         successMessage.innerHTML = `
-            <h3>🚀 Message Sent!</h3>
-            <p>Your message has been transmitted across the cosmos. I'll get back to you soon!</p>
+            <h3 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">🚀 Message Sent!</h3>
+            <p style="margin: 0; color: var(--color-text-secondary);">Your message has been transmitted across the cosmos. I'll get back to you soon!</p>
         `;
         successMessage.style.cssText = `
-            background: var(--color-stardust);
-            padding: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(123, 47, 255, 0.1));
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
             text-align: center;
-            margin-top: 1rem;
-            border: 1px solid var(--color-primary);
+            margin-top: 1.5rem;
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
         `;
         
-        this.form.appendChild(successMessage);
+        this.form.insertBefore(successMessage, this.form.querySelector('.submit-button').nextSibling);
         
-        // Remove success message after 5 seconds
+        // Reset form
+        this.form.reset();
+        this.clearAllErrors();
+        this.setLoadingState(false);
+        
+        // Scroll to success message
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Remove success message after 8 seconds
         setTimeout(() => {
-            successMessage.classList.add('fade-out');
-            setTimeout(() => successMessage.remove(), 400);
-        }, 5000);
+            successMessage.style.transition = 'opacity 0.5s ease-out';
+            successMessage.style.opacity = '0';
+            setTimeout(() => successMessage.remove(), 500);
+        }, 8000);
     }
 
     // Show error message
-    showErrorMessage() {
+    showErrorMessage(message = 'Failed to send message. Please try again later.') {
+        // Remove any existing messages
+        const existingMessages = this.form.querySelectorAll('.success-message, .error-message');
+        existingMessages.forEach(msg => msg.remove());
+        
         const errorMessage = document.createElement('div');
         errorMessage.className = 'error-message fade-in';
-        errorMessage.textContent = 'Failed to send message. Please try again later.';
+        errorMessage.innerHTML = `
+            <p style="margin: 0; color: var(--color-danger);">❌ ${message}</p>
+        `;
         errorMessage.style.cssText = `
-            background: var(--color-stardust);
-            color: var(--color-accent);
-            padding: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 51, 102, 0.05));
+            color: var(--color-danger);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
             text-align: center;
-            margin-top: 1rem;
-            border: 1px solid var(--color-accent);
+            margin-top: 1.5rem;
+            border: 2px solid var(--color-danger);
+            box-shadow: 0 4px 20px rgba(255, 51, 102, 0.2);
         `;
         
-        this.form.appendChild(errorMessage);
+        this.form.insertBefore(errorMessage, this.form.querySelector('.submit-button').nextSibling);
         
-        // Remove error message after 5 seconds
+        // Scroll to error message
+        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Remove error message after 8 seconds
         setTimeout(() => {
-            errorMessage.remove();
-        }, 5000);
+            errorMessage.style.transition = 'opacity 0.5s ease-out';
+            errorMessage.style.opacity = '0';
+            setTimeout(() => errorMessage.remove(), 500);
+        }, 8000);
     }
 }
 

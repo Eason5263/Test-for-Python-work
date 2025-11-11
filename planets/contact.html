@@ -10,7 +10,7 @@
 <body>
     <div class="planet-page page-scale-in">
         <header class="planet-header">
-            <a href="/" class="back-button" data-ajax>
+            <a href="../index.html" class="back-button" data-ajax>
                 ← Back to Portal
             </a>
             <h1>Contact</h1>
@@ -18,7 +18,13 @@
         </header>
 
         <main class="content">
-            <form class="contact-form fade-in">
+            <form class="contact-form fade-in" id="contactForm">
+                <!-- FormSubmit will send emails to easonjenichia@gmail.com -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission from DevVerse">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="box">
+                <input type="text" name="_honey" style="display:none"> <!-- Honeypot for spam protection -->
+                
                 <div class="form-group">
                     <label for="name">Your Name</label>
                     <input type="text" id="name" name="name" required 
@@ -52,8 +58,8 @@
             <div class="contact-info fade-in">
                 <h2>Other Ways to Connect</h2>
                 <div class="contact-links">
-                    <a href="mailto:hello@devverse.com" class="contact-link">
-                        📧 hello@devverse.com
+                    <a href="mailto:easonjenichia@gmail.com" class="contact-link">
+                        📧 easonjenichia@gmail.com
                     </a>
                     <a href="https://github.com" class="contact-link">
                         💻 GitHub
