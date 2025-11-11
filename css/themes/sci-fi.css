@@ -1,0 +1,47 @@
+/* Sci-Fi Theme (Default) */
+body.theme-sci-fi {
+  --color-primary: #00D9FF;
+  --color-secondary: #FF00E5;
+  --color-accent: #7B2FFF;
+  --color-success: #00FF94;
+  --color-warning: #FFB800;
+  --color-danger: #FF3366;
+  
+  --color-bg-main: #0A0E27;
+  --color-bg-secondary: #141B3D;
+  --color-bg-tertiary: #1E2749;
+  --color-bg-overlay: rgba(10, 14, 39, 0.95);
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B8C5D6;
+  --color-text-muted: #6B7A99;
+  
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.3);
+  
+  /* Planet Colors */
+  --planet-about: #4A90E2;
+  --planet-projects: #E24A4A;
+  --planet-skills: #4AE290;
+  --planet-blog: #E2D44A;
+  --planet-contact: #9B4AE2;
+}
+
+.theme-sci-fi {
+  background: linear-gradient(135deg, var(--color-bg-main) 0%, #1a1f38 100%);
+}
+
+.theme-sci-fi .gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theme-sci-fi .glow-effect {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.theme-sci-fi .glow-effect:hover {
+  box-shadow: 0 0 40px rgba(0, 217, 255, 0.5);
+}

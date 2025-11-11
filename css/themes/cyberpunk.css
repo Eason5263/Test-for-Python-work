@@ -1,0 +1,77 @@
+/* Cyberpunk Theme */
+body.theme-cyberpunk {
+  --color-primary: #00FF00;
+  --color-secondary: #FF00FF;
+  --color-accent: #FFFF00;
+  --color-success: #00FF88;
+  --color-warning: #FFAA00;
+  --color-danger: #FF0044;
+  
+  --color-bg-main: #0A0A0A;
+  --color-bg-secondary: #1A1A1A;
+  --color-bg-tertiary: #2A2A2A;
+  --color-bg-overlay: rgba(10, 10, 10, 0.95);
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #CCCCCC;
+  --color-text-muted: #888888;
+  
+  --color-border: rgba(0, 255, 0, 0.3);
+  --color-border-hover: rgba(0, 255, 0, 0.6);
+  
+  /* Planet Colors */
+  --planet-about: #00FFFF;
+  --planet-projects: #FF00FF;
+  --planet-skills: #00FF00;
+  --planet-blog: #FFFF00;
+  --planet-contact: #FF00AA;
+}
+
+.theme-cyberpunk {
+  background: linear-gradient(135deg, #0A0A0A 0%, #1A1A2E 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.theme-cyberpunk::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--color-primary), 
+    var(--color-secondary), 
+    var(--color-accent), 
+    transparent
+  );
+  animation: scanline 2s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.theme-cyberpunk .gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theme-cyberpunk .neon-glow {
+  box-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+.theme-cyberpunk .neon-glow:hover {
+  box-shadow: 
+    0 0 15px currentColor,
+    0 0 30px currentColor,
+    0 0 60px currentColor;
+}

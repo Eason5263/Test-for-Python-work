@@ -1,0 +1,47 @@
+/* Fantasy Theme */
+body.theme-fantasy {
+  --color-primary: #FFD700;
+  --color-secondary: #9B30FF;
+  --color-accent: #FF1493;
+  --color-success: #32CD32;
+  --color-warning: #FF8C00;
+  --color-danger: #DC143C;
+  
+  --color-bg-main: #2D1B69;
+  --color-bg-secondary: #3D2B8B;
+  --color-bg-tertiary: #4A3A99;
+  --color-bg-overlay: rgba(45, 27, 105, 0.95);
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #E6D8FF;
+  --color-text-muted: #B8A8E6;
+  
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-border-hover: rgba(255, 255, 255, 0.4);
+  
+  /* Planet Colors */
+  --planet-about: #4169E1;
+  --planet-projects: #FF6B6B;
+  --planet-skills: #51CF66;
+  --planet-blog: #FFD93D;
+  --planet-contact: #9B51E0;
+}
+
+.theme-fantasy {
+  background: linear-gradient(135deg, var(--color-bg-main) 0%, #5A3F8C 100%);
+}
+
+.theme-fantasy .gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theme-fantasy .magic-glow {
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+.theme-fantasy .magic-glow:hover {
+  box-shadow: 0 0 45px rgba(255, 215, 0, 0.6);
+}
