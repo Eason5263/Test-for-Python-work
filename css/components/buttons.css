@@ -99,55 +99,160 @@
   animation: spin 1s linear infinite;
 }
 
-/* Planet Navigation Buttons */
+/* Planet Navigation Buttons - Enhanced */
 .planet-btn {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid;
-  background: radial-gradient(circle, var(--planet-color, var(--color-primary)) 30%, transparent 70%);
+  border: 3px solid;
+  background: var(--color-bg-secondary);
   position: relative;
   transition: all var(--transition-slow);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-text-primary);
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
 }
 
 .planet-btn::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, transparent 30%, rgba(255,255,255,0.1) 70%);
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--planet-color) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
   opacity: 0;
-  transition: opacity var(--transition-base);
+  z-index: 0;
+}
+
+.planet-btn::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  border: 2px solid var(--planet-color);
+  opacity: 0;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  transform: scale(0.8);
+  z-index: -1;
+}
+
+.planet-btn .planet-label {
+  position: relative;
+  z-index: 1;
+  transition: transform var(--transition-base), color var(--transition-base);
+}
+
+.planet-btn .planet-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: var(--planet-glow);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform var(--transition-slow), opacity var(--transition-slow);
+  filter: blur(20px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .planet-btn:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 30px currentColor;
+  transform: scale(1.15) translateY(-5px);
+  border-color: var(--planet-color);
+  box-shadow: var(--shadow-glow-primary), 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .planet-btn:hover::before {
-  opacity: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.planet-btn:hover::after {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
+.planet-btn:hover .planet-label {
+  transform: scale(1.1);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 10px var(--planet-color);
+}
+
+.planet-btn:hover .planet-glow {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.6;
+}
+
+.planet-btn:active {
+  transform: scale(1.05) translateY(-2px);
 }
 
 .planet-btn.active {
   transform: scale(1.1);
-  box-shadow: 0 0 20px currentColor;
-  animation: pulse 2s infinite;
+  border-color: var(--planet-color);
+  box-shadow: 0 0 25px var(--planet-color);
+  animation: planetPulse 2s ease-in-out infinite;
+}
+
+.planet-btn.active .planet-glow {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.4;
+}
+
+@keyframes planetPulse {
+  0%, 100% {
+    box-shadow: 0 0 25px var(--planet-color), 0 0 50px var(--planet-color);
+  }
+  50% {
+    box-shadow: 0 0 35px var(--planet-color), 0 0 70px var(--planet-color);
+  }
 }
 
 /* Specific Planet Colors */
-.planet-about { --planet-color: var(--planet-about); }
-.planet-projects { --planet-color: var(--planet-projects); }
-.planet-skills { --planet-color: var(--planet-skills); }
-.planet-blog { --planet-color: var(--planet-blog); }
-.planet-contact { --planet-color: var(--planet-contact); }
+.planet-about { 
+  --planet-color: var(--planet-about);
+  --planet-glow: var(--planet-about-glow);
+  border-color: var(--planet-about);
+}
+
+.planet-projects { 
+  --planet-color: var(--planet-projects);
+  --planet-glow: var(--planet-projects-glow);
+  border-color: var(--planet-projects);
+}
+
+.planet-skills { 
+  --planet-color: var(--planet-skills);
+  --planet-glow: var(--planet-skills-glow);
+  border-color: var(--planet-skills);
+}
+
+.planet-blog { 
+  --planet-color: var(--planet-blog);
+  --planet-glow: var(--planet-blog-glow);
+  border-color: var(--planet-blog);
+}
+
+.planet-contact { 
+  --planet-color: var(--planet-contact);
+  --planet-glow: var(--planet-contact-glow);
+  border-color: var(--planet-contact);
+}

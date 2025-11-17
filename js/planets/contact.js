@@ -95,47 +95,198 @@ class ContactPlanet {
         return isValid;
     }
 
-    // Submit form to FormSubmit via AJAX
-    // FormSubmit is a free service that sends form submissions via email
-    // Note: On first use, FormSubmit will send a confirmation email to easonjenichia@gmail.com
-    // You need to click the confirmation link to activate the form
+    // Submit form using EmailJS service
+    // IMPORTANT: You need to set up EmailJS first (see SETUP_CONTACT_FORM.md)
+    // Get your credentials from https://www.emailjs.com/
     async submitToFormSubmit() {
         this.setLoadingState(true);
         this.clearAllErrors();
 
         try {
-            // Get form data
-            const formData = new FormData(this.form);
+            // ============================================
+            // CONFIGURATION - UPDATE THESE VALUES
+            // ============================================
+            // Get these from your EmailJS account:
+            // 1. Service ID - from Email Services
+            // 2. Template ID - from Email Templates  
+            // 3. Public Key - from Account → General
+            const EMAILJS_SERVICE_ID = 'service_0op4j48';
+            const EMAILJS_TEMPLATE_ID = 'template_h8lamvg';
+            const EMAILJS_PUBLIC_KEY = 'kVAn-eVzwx3vDBEuG';
+            // ============================================
+
+            // Check if EmailJS is configured (check for placeholder values)
+            console.log('Checking EmailJS configuration...', {
+                serviceId: EMAILJS_SERVICE_ID,
+                templateId: EMAILJS_TEMPLATE_ID,
+                publicKey: EMAILJS_PUBLIC_KEY ? EMAILJS_PUBLIC_KEY.substring(0, 10) + '...' : 'missing'
+            });
             
-            // Submit to FormSubmit using AJAX endpoint
-            // This sends the form data to FormSubmit, which then emails it to easonjenichia@gmail.com
-            const response = await fetch('https://formsubmit.co/ajax/easonjenichia@gmail.com', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+            if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID_HERE' || 
+                EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID_HERE' || 
+                EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' ||
+                !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+                // EmailJS not configured - use mailto fallback (works immediately)
+                console.warn('EmailJS not configured properly. Using mailto fallback.');
+                console.warn('Values:', {
+                    serviceId: EMAILJS_SERVICE_ID,
+                    templateId: EMAILJS_TEMPLATE_ID,
+                    publicKey: EMAILJS_PUBLIC_KEY
+                });
+                this.useMailtoFallback();
+                return;
+            }
+            
+            console.log('✅ EmailJS is configured correctly!');
+
+            // Check if EmailJS SDK is loaded
+            if (typeof emailjs === 'undefined') {
+                console.error('EmailJS SDK not loaded');
+                throw new Error('EmailJS SDK not loaded. Please add the script tag to contact.html');
+            }
+
+            console.log('EmailJS SDK loaded, preparing to send email...');
+
+            // Get form field values
+            const name = this.form.querySelector('#name').value.trim();
+            const email = this.form.querySelector('#email').value.trim();
+            const subject = this.form.querySelector('#subject').value.trim() || 'New Contact Form Submission';
+            const message = this.form.querySelector('#message').value.trim();
+
+            console.log('Sending email with EmailJS...', {
+                serviceId: EMAILJS_SERVICE_ID,
+                templateId: EMAILJS_TEMPLATE_ID,
+                publicKey: EMAILJS_PUBLIC_KEY.substring(0, 5) + '...', // Only show first 5 chars for security
+                name: name,
+                email: email,
+                subject: subject
             });
 
-            const data = await response.json();
+            // Prepare template parameters
+            // NOTE: These parameter names must match your EmailJS template variables
+            // Make sure your EmailJS template uses: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                subject: subject,
+                message: message,
+                reply_to: email  // This allows you to reply directly to the sender
+            };
 
-            // FormSubmit returns { success: true } on success
-            if (response.ok && (data.success === true || response.status === 200)) {
-                // Success! Email has been sent
-                this.showSuccessMessage();
-                this.form.reset();
-            } else {
-                // Error from FormSubmit
-                const errorMsg = data.message || 'Failed to send message';
-                throw new Error(errorMsg);
-            }
+            // Send email using EmailJS v3 API
+            // In v3, the public key is passed as the 4th parameter
+            const response = await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY  // Public key as 4th parameter (EmailJS v3)
+            );
+
+            console.log('Email sent successfully:', response);
+
+            // Success!
+            this.showSuccessMessage();
+            this.form.reset();
+
         } catch (error) {
             console.error('Form submission error:', error);
-            // Show user-friendly error message
-            this.showErrorMessage('Failed to send message. Please try again or email me directly at easonjenichia@gmail.com');
+            
+            // Provide helpful error messages
+            if (error.message.includes('not configured')) {
+                this.showErrorMessage(
+                    'Email service not configured. Please check SETUP_CONTACT_FORM.md for setup instructions. ' +
+                    'For now, you can email directly at easonjenichia@gmail.com'
+                );
+            } else if (error.message.includes('SDK not loaded')) {
+                this.showErrorMessage(
+                    'EmailJS SDK not loaded. Please add the script tag to contact.html. ' +
+                    'See SETUP_CONTACT_FORM.md for details.'
+                );
+            } else {
+                // Fallback to mailto if EmailJS fails
+                const name = this.form.querySelector('#name').value.trim();
+                const email = this.form.querySelector('#email').value.trim();
+                const subject = this.form.querySelector('#subject').value.trim() || 'New Contact Form Submission';
+                const message = this.form.querySelector('#message').value.trim();
+                
+                const emailBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+                const mailtoLink = `mailto:easonjenichia@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+                
+                this.showErrorMessage(
+                    `Email service error: ${error.message}. ` +
+                    `Click <a href="${mailtoLink}" style="color: var(--color-primary); text-decoration: underline;">here</a> to email directly.`
+                );
+            }
         } finally {
             this.setLoadingState(false);
         }
+    }
+
+    // Mailto fallback - opens user's email client with pre-filled message
+    // This works immediately without any setup required
+    useMailtoFallback() {
+        const name = this.form.querySelector('#name').value.trim();
+        const email = this.form.querySelector('#email').value.trim();
+        const subject = this.form.querySelector('#subject').value.trim() || 'New Contact Form Submission';
+        const message = this.form.querySelector('#message').value.trim();
+        
+        // Format email body
+        const emailBody = `Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+
+---
+This message was sent from your DevVerse contact form.`;
+        
+        // Create mailto link
+        const mailtoLink = `mailto:easonjenichia@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+        
+        // Show info message
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'info-message fade-in';
+        infoDiv.innerHTML = `
+            <h3 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">📧 Opening Email Client</h3>
+            <p style="margin: 0 0 1rem 0; color: var(--color-text-secondary);">
+                Your email client will open with a pre-filled message. 
+                Just click "Send" to deliver your message!
+            </p>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">
+                💡 <strong>Tip:</strong> For automatic email sending (no email client needed), 
+                set up EmailJS. See <code>SETUP_CONTACT_FORM.md</code> for instructions.
+            </p>
+        `;
+        infoDiv.style.cssText = `
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(123, 47, 255, 0.15));
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-top: 1.5rem;
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        `;
+        
+        // Insert before submit button
+        const submitButton = this.form.querySelector('.submit-button');
+        this.form.insertBefore(infoDiv, submitButton.nextSibling);
+        
+        // Open mailto link
+        window.location.href = mailtoLink;
+        
+        // Reset form after a short delay
+        setTimeout(() => {
+            this.form.reset();
+            this.setLoadingState(false);
+        }, 500);
+        
+        // Remove info message after 10 seconds
+        setTimeout(() => {
+            infoDiv.style.transition = 'opacity 0.5s ease-out';
+            infoDiv.style.opacity = '0';
+            setTimeout(() => infoDiv.remove(), 500);
+        }, 10000);
     }
 
     // Basic form validation
@@ -312,7 +463,23 @@ class ContactPlanet {
     }
 }
 
-// Initialize when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize when DOM is fully loaded and EmailJS is available
+function initializeContactForm() {
+    // Check if EmailJS is loaded
+    if (typeof emailjs === 'undefined') {
+        console.warn('EmailJS not loaded yet, waiting...');
+        setTimeout(initializeContactForm, 100);
+        return;
+    }
+    
+    console.log('EmailJS is loaded, initializing contact form...');
     new ContactPlanet();
-});
+}
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeContactForm);
+} else {
+    // DOM is already ready
+    initializeContactForm();
+}

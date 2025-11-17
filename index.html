@@ -3,77 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DevVerse - Your developer portfolio universe. Explore my work, skills, and projects in a cosmic-themed portfolio.">
   <title>DevVerse - Portfolio Universe</title>
   
-  <!-- SIMPLIFIED STYLES -->
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      background: #0A0E27; 
-      color: white; 
-      font-family: Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .emergency-content {
-      text-align: center;
-      padding: 2rem;
-    }
-    h1 { 
-      font-size: 3rem; 
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #00D9FF, #7B2FFF);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .planet-grid {
-      display: flex;
-      gap: 1rem;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .planet-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: transform 0.3s;
-    }
-    .planet-btn:hover {
-      transform: scale(1.1);
-    }
-  </style>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-  <div class="emergency-content">
-    <h1>🌌 DevVerse</h1>
-    <p>Your developer portfolio universe</p>
-    
-    <div class="planet-grid">
-      <a href="planets/about.html" class="planet-btn" style="border-color: #4A90E2; background: radial-gradient(circle, #4A90E2 30%, transparent 70%);">About</a>
-      <a href="planets/projects.html" class="planet-btn" style="border-color: #E24A4A; background: radial-gradient(circle, #E24A4A 30%, transparent 70%);">Projects</a>
-      <a href="planets/skills.html" class="planet-btn" style="border-color: #4AE290; background: radial-gradient(circle, #4AE290 30%, transparent 70%);">Skills</a>
-      <a href="planets/blog.html" class="planet-btn" style="border-color: #E2D44A; background: radial-gradient(circle, #E2D44A 30%, transparent 70%);">Blog</a>
-      <a href="planets/contact.html" class="planet-btn" style="border-color: #9B4AE2; background: radial-gradient(circle, #9B4AE2 30%, transparent 70%);">Contact</a>
+  <!-- Animated Background -->
+  <div class="stars-background"></div>
+  
+  <!-- Main Content -->
+  <div class="homepage-container">
+    <div class="homepage-content fade-in">
+      <header class="homepage-header">
+        <h1 class="homepage-title">
+          <span class="title-icon">🌌</span>
+          <span class="title-text">DevVerse</span>
+        </h1>
+        <p class="homepage-subtitle">Your developer portfolio universe</p>
+        <p class="homepage-description">
+          Explore the cosmos of code, creativity, and innovation
+        </p>
+      </header>
+      
+      <nav class="planet-navigation">
+        <div class="planet-grid">
+          <a href="planets/about.html" class="planet-btn planet-about" data-planet="about">
+            <span class="planet-label">About</span>
+            <span class="planet-glow"></span>
+          </a>
+          <a href="planets/projects.html" class="planet-btn planet-projects" data-planet="projects">
+            <span class="planet-label">Projects</span>
+            <span class="planet-glow"></span>
+          </a>
+          <a href="planets/skills.html" class="planet-btn planet-skills" data-planet="skills">
+            <span class="planet-label">Skills</span>
+            <span class="planet-glow"></span>
+          </a>
+          <a href="planets/blog.html" class="planet-btn planet-blog" data-planet="blog">
+            <span class="planet-label">Blog</span>
+            <span class="planet-glow"></span>
+          </a>
+          <a href="planets/contact.html" class="planet-btn planet-contact" data-planet="contact">
+            <span class="planet-label">Contact</span>
+            <span class="planet-glow"></span>
+          </a>
+        </div>
+      </nav>
+      
+      <footer class="homepage-footer">
+        <p class="footer-text">
+          Navigate through the stars to discover my work
+        </p>
+      </footer>
     </div>
-    
-    <p style="margin-top: 2rem; color: #B8C5D6;">
-      JavaScript version loading...
-    </p>
   </div>
-  <!-- ORIGINAL SCRIPTS (will load in background) -->
+  
+  <!-- Scripts -->
+  <script src="./js/starfield-simple.js"></script>
   <script src="./js/main.js"></script>
-  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

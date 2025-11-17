@@ -1,31 +1,59 @@
 /* CSS Custom Properties - Design System */
 :root {
-  /* Color Palette - Sci-Fi Theme (Default) */
+  /* Color Palette - Enhanced Sci-Fi Theme */
   --color-primary: #00D9FF;
+  --color-primary-dark: #00B8D9;
+  --color-primary-light: #33E0FF;
   --color-secondary: #FF00E5;
+  --color-secondary-dark: #D900C4;
   --color-accent: #7B2FFF;
+  --color-accent-dark: #5A1FCC;
+  --color-accent-light: #9B5FFF;
   --color-success: #00FF94;
+  --color-success-dark: #00CC75;
   --color-warning: #FFB800;
+  --color-warning-dark: #CC9400;
   --color-danger: #FF3366;
+  --color-danger-dark: #CC2852;
   
+  /* Background Colors - Deeper, richer blues */
   --color-bg-main: #0A0E27;
   --color-bg-secondary: #141B3D;
   --color-bg-tertiary: #1E2749;
+  --color-bg-quaternary: #28345A;
   --color-bg-overlay: rgba(10, 14, 39, 0.95);
+  --color-bg-glass: rgba(20, 27, 61, 0.7);
   
+  /* Text Colors - Better contrast */
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #B8C5D6;
   --color-text-muted: #6B7A99;
+  --color-text-disabled: #4A5568;
   
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-hover: rgba(255, 255, 255, 0.3);
+  /* Border Colors */
+  --color-border: rgba(0, 217, 255, 0.2);
+  --color-border-hover: rgba(0, 217, 255, 0.4);
+  --color-border-light: rgba(255, 255, 255, 0.1);
+  --color-border-dark: rgba(0, 0, 0, 0.3);
   
-  /* Planet Colors */
+  /* Planet Colors - Enhanced with better saturation */
   --planet-about: #4A90E2;
-  --planet-projects: #E24A4A;
-  --planet-skills: #4AE290;
-  --planet-blog: #E2D44A;
-  --planet-contact: #9B4AE2;
+  --planet-about-glow: rgba(74, 144, 226, 0.4);
+  --planet-projects: #FF6B6B;
+  --planet-projects-glow: rgba(255, 107, 107, 0.4);
+  --planet-skills: #4ECDC4;
+  --planet-skills-glow: rgba(78, 205, 196, 0.4);
+  --planet-blog: #FFE66D;
+  --planet-blog-glow: rgba(255, 230, 109, 0.4);
+  --planet-contact: #A78BFA;
+  --planet-contact-glow: rgba(167, 139, 250, 0.4);
+  
+  /* Gradient Colors */
+  --gradient-primary: linear-gradient(135deg, #00D9FF 0%, #7B2FFF 100%);
+  --gradient-secondary: linear-gradient(135deg, #FF00E5 0%, #7B2FFF 100%);
+  --gradient-accent: linear-gradient(135deg, #00D9FF 0%, #00FF94 100%);
+  --gradient-bg: linear-gradient(135deg, #0A0E27 0%, #1E2749 100%);
+  --gradient-overlay: linear-gradient(180deg, rgba(10, 14, 39, 0) 0%, rgba(10, 14, 39, 0.9) 100%);
   
   /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -73,13 +101,22 @@
   --radius-xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(0, 217, 255, 0.5);
-  --shadow-glow-strong: 0 0 40px rgba(0, 217, 255, 0.8);
+  /* Shadows - Enhanced with colored glows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  
+  /* Colored Glow Shadows */
+  --shadow-glow-primary: 0 0 20px rgba(0, 217, 255, 0.4), 0 0 40px rgba(0, 217, 255, 0.2);
+  --shadow-glow-strong: 0 0 30px rgba(0, 217, 255, 0.6), 0 0 60px rgba(0, 217, 255, 0.3);
+  --shadow-glow-accent: 0 0 20px rgba(123, 47, 255, 0.4), 0 0 40px rgba(123, 47, 255, 0.2);
+  --shadow-glow-secondary: 0 0 20px rgba(255, 0, 229, 0.4), 0 0 40px rgba(255, 0, 229, 0.2);
+  
+  /* Inner Shadows */
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  --shadow-inner-lg: inset 0 4px 8px 0 rgba(0, 0, 0, 0.3);
   
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);

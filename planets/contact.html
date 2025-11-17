@@ -72,6 +72,10 @@
         </main>
     </div>
 
-    <script src="../js/planets/contact.js" defer></script>
+    <!-- EmailJS SDK - Load first, required for contact form to work -->
+    <!-- Get your credentials from https://www.emailjs.com/ -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Contact form script - loads after EmailJS -->
+    <script src="../js/planets/contact.js"></script>
 </body>
 </html>
